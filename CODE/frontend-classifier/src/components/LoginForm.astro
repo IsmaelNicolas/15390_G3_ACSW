@@ -1,0 +1,40 @@
+---
+import Button from "./Button.astro";
+import InputForm from "./InputForm.astro";
+---
+
+<div
+  class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 align-middle dark:bg-gray-900"
+>
+  <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+    <img class="mx-auto h-auto w-auto" src="new_logo.svg" alt="Your Company" />
+  </div>
+
+  <div class="mt-5 sm:mx-auto sm:w-full sm:max-w-sm">
+    <InputForm
+      id="username"
+      label="Usario"
+      type="text"
+      placeholder="Nombre de usuario"
+    />
+    <InputForm
+      id="password"
+      label="Contraseña"
+      type="password"
+      placeholder="Contraseña"
+    />
+    <br />
+    <Button id="btnlogin" text="Iniciar Sesión" type="submit" click="navigateToAnotherRoute()"/>
+    <form class="space-y-6"></form>
+  </div>
+</div>
+
+<script>
+  function navigateToAnotherRoute() {
+    // Cambiar la URL a la nueva ruta
+    const username = document.getElementById("username");
+    const password = document.getElementById("password");
+    console.log({ username, password });
+    location.href = "/";
+  }
+</script>
