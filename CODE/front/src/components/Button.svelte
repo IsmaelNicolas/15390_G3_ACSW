@@ -1,0 +1,15 @@
+<script lang="ts">
+    export let id:string = "";
+    export let type: "submit" | "button" = "button";
+    export let click: () => void = () => {};
+    export let text = "";
+</script>
+
+<div>
+    <button
+        id={id}  
+        type={type}
+        on:click={click}
+        class="w-full bg-blue-500 shadow-lg shadow-blue-500/50 py-1.5 px-2.5 mx-auto rounded-md border-1 text-white dark:bg-transparent dark:border-2 dark:border-blue-500"
+    >{text}</button>
+</div>

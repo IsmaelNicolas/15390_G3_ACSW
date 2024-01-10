@@ -3,11 +3,11 @@
 </script>
 
 <svelte:head>
-	<title>Inicio</title>
-	<meta name="description" content="Clasificador de plagas"/>
+	<title>Login</title>
+	<meta name="Login" content="Clasificador de plagas"/>
 </svelte:head>
 
 <section>
-	hola
+	Login
 </section>
 
