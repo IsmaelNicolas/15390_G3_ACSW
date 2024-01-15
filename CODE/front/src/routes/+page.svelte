@@ -13,7 +13,7 @@
 	onMount(async () => {
 		try {
 			// Hacer la llamada a la API
-			const response = await fetch('http://192.168.0.160:8000/historias');
+			const response = await fetch('http://localhost:8000/historias');
 
 			// Verificar si la respuesta es exitosa
 			if (response.ok) {

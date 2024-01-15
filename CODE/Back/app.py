@@ -13,7 +13,7 @@ Configuración del CORS
 Se definen los dominios permitidos para las solicitudes CORS.
 """
 origins = [
-    "http://localhost:5173"]
+    "http://localhost:5173","http://127.0.0.1" ]
 
 app.add_middleware(
     CORSMiddleware,
