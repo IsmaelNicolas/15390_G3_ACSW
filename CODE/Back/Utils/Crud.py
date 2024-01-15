@@ -6,9 +6,10 @@ from typing import List
 
 class HistoriaCRUD:
     @staticmethod
-    def create_historia(historia_create: HistoriaCreate) -> Historia:
+    def create_historia(historia_create: HistoriaCreate,user_id:str) -> Historia:
         collection: Collection = Database.get_connection().historias
         historia_dict = historia_create.dict()
+        historia_dict["user_id"] = user_id
         result = collection.insert_one(historia_dict)
         historia_dict['_id'] = str(result.inserted_id)
         return Historia(**historia_dict)
@@ -32,7 +33,8 @@ class HistoriaCRUD:
         collection.delete_one({"_id": ObjectId(historia_id)})
 
     @staticmethod
-    def get_all_historias() -> List[Historia]:
+    def get_all_historias(user_id: str) -> List[Historia]:
         collection: Collection = Database.get_connection().historias
-        historias_list = [Historia(**historia) for historia in collection.find()]
+        filter_criteria = {"user_id": user_id}
+        historias_list = [Historia(**historia) for historia in collection.find(filter_criteria)]
         return historias_list
