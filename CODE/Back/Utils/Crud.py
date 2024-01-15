@@ -2,6 +2,7 @@ from bson import ObjectId
 from pymongo.collection import Collection
 from config.database import Database
 from Models.History import Historia, HistoriaCreate, HistoriaUpdate
+from typing import List
 
 class HistoriaCRUD:
     @staticmethod
@@ -29,3 +30,9 @@ class HistoriaCRUD:
     def delete_historia(historia_id: str) -> None:
         collection: Collection = Database.get_connection().historias
         collection.delete_one({"_id": ObjectId(historia_id)})
+
+    @staticmethod
+    def get_all_historias() -> List[Historia]:
+        collection: Collection = Database.get_connection().historias
+        historias_list = [Historia(**historia) for historia in collection.find()]
+        return historias_list

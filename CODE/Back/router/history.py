@@ -2,6 +2,7 @@ from fastapi import (APIRouter, Depends, FastAPI, HTTPException, Response,
                      status)
 from Utils.Crud import HistoriaCRUD
 from Models.History import Historia, HistoriaCreate, HistoriaUpdate
+from typing import List
 
 router = APIRouter()
 
@@ -27,3 +28,8 @@ def update_historia(historia_id: str, historia_update: HistoriaUpdate):
 def delete_historia(historia_id: str):
     HistoriaCRUD.delete_historia(historia_id)
     return None
+
+@router.get("/historias", response_model=List[Historia])
+def read_all_historias():
+    historias = HistoriaCRUD.get_all_historias()
+    return historias

@@ -21,7 +21,7 @@
                 autocomplete={'user'}
                 placeholder={placeholder}
                 required
-                class="w-full py-3 px-2.5 rounded-xl border-1 shadow-lg shadow-gray-300 dark:shadow-gray-500/20 placeholder:text-gray-300 dark:bg-gray-900 dark:text-white"
+                class="w-full py-3 px-2.5 rounded-xl border-1 shadow-lg shadow-gray-300 dark:shadow-gray-500/20 placeholder:text-gray-400 dark:bg-gray-900 dark:text-white"
             />
         {:else if type === 'password'}
             <input
@@ -32,7 +32,7 @@
                 autocomplete={'user'}
                 placeholder={placeholder}
                 required
-                class="w-full py-3 px-2.5 rounded-xl border-1 shadow-lg shadow-gray-300 dark:shadow-gray-500/20 placeholder:text-gray-300 dark:bg-gray-900 dark:text-white"
+                class="w-full py-3 px-2.5 rounded-xl border-1 shadow-lg shadow-gray-300 dark:shadow-gray-500/20 placeholder:text-gray-400 dark:bg-gray-900 dark:text-white"
             />
         {:else if type === 'email'}
             <input
@@ -43,7 +43,7 @@
                 autocomplete={'email'}
                 placeholder={placeholder}
                 required
-                class="w-full py-3 px-2.5 rounded-xl border-1 shadow-lg shadow-gray-300 dark:shadow-gray-50/20 placeholder:text-gray-300 dark:bg-gray-900 dark:text-white"
+                class="w-full py-3 px-2.5 rounded-xl border-1 shadow-lg shadow-gray-300 dark:shadow-gray-50/20 placeholder:text-gray-400 dark:bg-gray-900 dark:text-white"
             />
         {:else if type === 'number'}
             <input
@@ -54,7 +54,7 @@
                 autocomplete={'user'}
                 placeholder={placeholder}
                 required
-                class="w-full py-3 px-2.5 rounded-xl border-1 shadow-lg shadow-gray-300 dark:shadow-gray-50/20 placeholder:text-gray-300 dark:bg-gray-900 dark:text-white"
+                class="w-full py-3 px-2.5 rounded-xl border-1 shadow-lg shadow-gray-300 dark:shadow-gray-50/20 placeholder:text-gray-400 dark:bg-gray-900 dark:text-white"
             />
         {/if}
     </div>

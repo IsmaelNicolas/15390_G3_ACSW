@@ -17,7 +17,7 @@
 		// For example, make an API request with the login credentials
 
 		// Redirect to the home page after handling the login
-		goto('/');
+		goto('/home');
 	}
 </script>
 
