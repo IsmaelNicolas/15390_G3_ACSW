@@ -33,6 +33,7 @@
   "type": "module",
   "dependencies": {
     "@popperjs/core": "^2.11.8",
+    "axios": "^1.6.5",
     "flowbite": "^2.2.1",
     "flowbite-svelte": "^0.44.22",
     "tailwind-merge": "^2.2.0"

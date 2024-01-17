@@ -3,8 +3,15 @@
 	import Sun from '../components/Sun.svelte';
     import { goto } from '$app/navigation';
     import Logo from '$lib/images/new_logo.svg';
+	import {deleteCookie} from '../Utils/function'
 
-    function logout (){
+    async function logout (){
+		// const access_token = getCookie('access_token');
+		// console.log(access_token)
+		const response =  await fetch('http://localhost:8000/api/logout',{
+			method: 'POST'
+		})
+		deleteCookie('access_token')
         goto('/login');
     }
 
@@ -21,7 +28,7 @@
 	}
 </script>
 
-<nav class="bg-gray-100 border-gray-200 dark:bg-gray-900 mb-10">
+<nav class="bg-gray-100 border-gray-200 dark:bg-gray-900 mb-10 md:mb-0">
 	<div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
 		<a href="/home" class="flex items-center space-x-3 rtl:space-x-reverse">
 			<img src={Logo} class="h-14" alt="Logo" />

@@ -27,40 +27,46 @@ async def login(response: Response, form: OAuth2PasswordRequestForm = Depends())
     Raises:
         HTTPException: Si la contraseña es incorrecta.
     """
-    user: UserDB = search_user(form.username)
-    print(form.username)
+    try: 
+        user: UserDB = search_user(form.username)
+        print(form.username)
 
-    if not crypt.verify(form.password, user.user_password):
+        if not crypt.verify(form.password, user.user_password):
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect password")
+
+        expire = ((datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_DURATION)).timestamp())
+
+        access_token = {
+            "sub": user.user_name,
+            "exp": expire
+        }
+
+        encoded_token = jwt.encode(access_token, SECRET, algorithm=ALGORITHM)
+
+        response = JSONResponse(
+            content={"access_token": encoded_token, "token_type": "bearer"},
+            status_code=status.HTTP_200_OK
+        )
+
+        response.set_cookie(
+            key="access_token",
+            value=encoded_token,
+            expires=expire,
+            httponly=True,
+            samesite='lax',
+        )
+
+        return response
+    except Exception as e:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect password")
-
-    expire = ((datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_DURATION)).timestamp())
-
-    access_token = {
-        "sub": user.user_name,
-        "exp": expire
-    }
-
-    encoded_token = jwt.encode(access_token, SECRET, algorithm=ALGORITHM)
-
-    response = JSONResponse(
-        content={"access_token": encoded_token, "token_type": "bearer"},
-        status_code=status.HTTP_200_OK
-    )
-
-    response.set_cookie(
-        key="access_token",
-        value=encoded_token,
-        expires=expire,
-        httponly=True,
-        samesite='lax',
-    )
-
-    return response
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Internal Server Error: {str(e)}"
+        )
 
 
 @api_router.post("/logout")
-async def logout(response: Response, user: User = Depends(current_user)):
+async def logout(response: Response):
     """
     Endpoint para cerrar sesión y eliminar el token de acceso almacenado en las cookies.
 

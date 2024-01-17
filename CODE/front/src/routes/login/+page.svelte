@@ -2,22 +2,37 @@
 	import Button from '../../components/Button.svelte';
 	import InputForm from '../../components/InputForm.svelte';
 	import Logo from '$lib/images/new_logo.svg';
-
+	import {getCookie,setCookie} from '../../Utils/function'
+	import {getCookie,setCookie} from '../../Utils/function'
 	import { goto } from '$app/navigation';
 
 	let username = '';
 	let password = '';
 
-	function handleLogin() {
-		// Log the form elements to the console
-		console.log('Username:', username);
-		console.log('Password:', password);
+	async function handleLogin() {
+		const formData = new FormData();
+		formData.append('username', username);
+		formData.append('password', password);
 
-		// You can use the form data for further processing
-		// For example, make an API request with the login credentials
+		try {
+			const response = await fetch('http://localhost:8000/api/login', {
+				method: 'POST',
+				body: formData,
+				credentials: 'include'
+			});
 
-		// Redirect to the home page after handling the login
-		goto('/home');
+			// console.log(response);
+
+			if (response.ok) {
+				const { access_token } = await response.json();
+				setCookie("access_token",access_token,7,'/');
+				goto('/home');
+			} else {
+				console.log('Error in response:', await response.text());
+			}
+		} catch (error) {
+			console.error('Error durante fetch:', error);
+		}
 	}
 </script>
 
@@ -32,10 +47,8 @@
 			<img class="mx-auto h-auto w-auto" src={Logo} alt="Your Company" />
 		</div>
 
-		<div class="md:border border-blue-500/50 md:h-80"></div>
-
 		<div class="w-full sm:mx-auto sm:w-full sm:max-w-sm mt-4">
-			<form on:submit|preventDefault={handleLogin} class="space-y-6 ">
+			<form on:submit|preventDefault={handleLogin} class="space-y-6">
 				<InputForm
 					bind:value={username}
 					id="username"

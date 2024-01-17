@@ -1,5 +1,4 @@
 <script lang="ts">
-	import '../../app.css';
 	import Moon from '../../components/Sun.svelte';
 	import Sun from '../../components/Moon.svelte';
 	import { page } from '$app/stores';
@@ -7,12 +6,6 @@
 
 	
 	let currentPath:any;
-
-	onMount(() => {
-		// Obtén la ruta actual al cargar el componente
-		currentPath = $page.route['id'];
-		console.log(currentPath);
-	});
 
 	function theme() {
 		const icon1 = document.getElementById('moon');
