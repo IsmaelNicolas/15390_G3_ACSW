@@ -19,7 +19,7 @@
 			if (response.ok) {
 				const data: Evento[] = await response.json();
 				eventos = data;
-				console.log(eventos);
+				// console.log(eventos);
 			} else {
 				console.error('Error al obtener datos de la API');
 			}

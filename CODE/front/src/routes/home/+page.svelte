@@ -24,7 +24,7 @@
 		});
 		if (response.ok) {
 			const data = await response.json();
-			console.log(data); // Verify that the data is logged correctly
+			// console.log(data); // Verify that the data is logged correctly
 			eventos = data; // Assign the data to the eventos variable
 			return data;
 		} else if (response.status === 401) {
@@ -37,13 +37,13 @@
 
 	onMount(async () => {
 		const access_token = getCookie('access_token');
-		console.log(access_token);
+		// console.log(access_token);
 		const response = await fetch('http://localhost:8000/api/user/me', {
 			headers: {
 				Authorization: `Bearer ${access_token}`
 			}
 		});
-		console.log(response);
+		// console.log(response);
 		if (!response.ok) {
 			goto('/login');
 		}
@@ -51,7 +51,7 @@
 </script>
 
 <svelte:head>
-	<title>Inicio</title>
+	<title>Sisamonitor Clasificador</title>
 	<meta name="description" content="Clasificador de plagas" />
 </svelte:head>
 

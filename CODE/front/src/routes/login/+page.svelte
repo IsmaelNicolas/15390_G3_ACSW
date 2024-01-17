@@ -20,7 +20,7 @@
 				credentials: 'include'
 			});
 
-			console.log(response);
+			// console.log(response);
 
 			if (response.ok) {
 				const { access_token } = await response.json();
