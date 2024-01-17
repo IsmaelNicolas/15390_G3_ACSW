@@ -1,5 +1,4 @@
 <script lang="ts">
-	import '../../app.css';
 	import Moon from '../../components/Sun.svelte';
 	import Sun from '../../components/Moon.svelte';
 	import { page } from '$app/stores';
