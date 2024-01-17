@@ -3,7 +3,6 @@
 	import InputForm from '../../components/InputForm.svelte';
 	import Logo from '$lib/images/new_logo.svg';
 	import {getCookie,setCookie} from '../../Utils/function'
-	import {getCookie,setCookie} from '../../Utils/function'
 	import { goto } from '$app/navigation';
 
 	let username = '';

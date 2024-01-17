@@ -59,13 +59,10 @@
 
 <div class="h-screen overflow-hidden">
 	<section class="mx-auto w-3/4 md:h-1/2 flex justify-center items-center">
-	<section class="mx-auto w-3/4 md:h-1/2 flex justify-center items-center">
 		<UploadImage />
 	</section>
 	<section class="w-11/12 mx-auto">
-	<section class="w-11/12 mx-auto">
 		{#await load_histories()}
-			<Loader />
 			<Loader />
 		{:then events}
 			{#if events.length > 0}
