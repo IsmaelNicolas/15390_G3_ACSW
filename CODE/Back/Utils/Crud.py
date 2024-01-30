@@ -12,6 +12,7 @@ class HistoriaCRUD:
         historia_dict["user_id"] = user_id
         result = collection.insert_one(historia_dict)
         historia_dict['_id'] = str(result.inserted_id)
+        print("201 history")
         return Historia(**historia_dict)
 
     @staticmethod

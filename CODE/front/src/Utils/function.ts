@@ -1,3 +1,4 @@
+export const API = "http://localhost:8000/api"
 export function getCookie(name: string): string | null {
 	const cookies = document.cookie.split(';').map((cookie) => cookie.trim());
 	for (const cookie of cookies) {

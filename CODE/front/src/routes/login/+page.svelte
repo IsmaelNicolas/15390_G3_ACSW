@@ -2,7 +2,7 @@
 	import Button from '../../components/Button.svelte';
 	import InputForm from '../../components/InputForm.svelte';
 	import Logo from '$lib/images/new_logo.svg';
-	import {getCookie,setCookie} from '../../Utils/function'
+	import {API,setCookie} from '../../Utils/function'
 	import { goto } from '$app/navigation';
 
 	let username = '';
@@ -14,7 +14,7 @@
 		formData.append('password', password);
 
 		try {
-			const response = await fetch('http://localhost:8000/api/login', {
+			const response = await fetch(API + '/login', {
 				method: 'POST',
 				body: formData,
 				credentials: 'include'

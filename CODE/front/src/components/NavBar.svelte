@@ -3,12 +3,12 @@
 	import Sun from '../components/Sun.svelte';
     import { goto } from '$app/navigation';
     import Logo from '$lib/images/new_logo.svg';
-	import {deleteCookie} from '../Utils/function'
+	import {API, deleteCookie} from '../Utils/function'
 
     async function logout (){
 		// const access_token = getCookie('access_token');
 		// console.log(access_token)
-		const response =  await fetch('http://localhost:8000/api/logout',{
+		const response =  await fetch(API+'/logout',{
 			method: 'POST'
 		})
 		deleteCookie('access_token')

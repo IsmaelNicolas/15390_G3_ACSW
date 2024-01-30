@@ -4,7 +4,7 @@
 	import TableHistory from '../../components/TableHistory.svelte';
 	import UploadImage from '../../components/UploadImage.svelte';
 	import Loader from '../../components/Loader.svelte';
-	import {getCookie,setCookie} from '../../Utils/function'
+	import { API, getCookie, setCookie } from '../../Utils/function';
 
 	// Definir el tipo para un evento
 	interface Event {
@@ -17,11 +17,12 @@
 
 	async function load_histories() {
 		const access_token = getCookie('access_token');
-		const response = await fetch('http://localhost:8000/historias', {
+		const response = await fetch(API + '/historias', {
 			headers: {
 				Authorization: `Bearer ${access_token}`
 			}
 		});
+		console.log(response)
 		if (response.ok) {
 			const data = await response.json();
 			// console.log(data); // Verify that the data is logged correctly
@@ -40,7 +41,7 @@
 	onMount(async () => {
 		const access_token = getCookie('access_token');
 		// console.log(access_token);
-		const response = await fetch('http://localhost:8000/api/user/me', {
+		const response = await fetch(API + '/user/me', {
 			headers: {
 				Authorization: `Bearer ${access_token}`
 			}
@@ -68,7 +69,9 @@
 			{#if events.length > 0}
 				<TableHistory {events} />
 			{:else}
-				<p>No hay eventos disponibles...</p>
+				<div class="flex justify-center items-center mt-10">
+					<p>No hay exite historico...</p>
+				</div>
 			{/if}
 		{/await}
 	</section>

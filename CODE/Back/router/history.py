@@ -31,7 +31,7 @@ def delete_historia(historia_id: str,user: User = Depends(current_user)):
     HistoriaCRUD.delete_historia(historia_id)
     return None
 
-@router.get("/historias", response_model=List[Historia] )
+@router.get("/api/historias", response_model=List[Historia] )
 def read_all_historias(user: User = Depends(current_user)):
     historias = HistoriaCRUD.get_all_historias(user_id=user.user_id)
     return historias

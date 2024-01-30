@@ -14,6 +14,7 @@ def search_user(user_name: str, db=True) -> Union[UserDB, User]:
     try:
         db_connection = Database.get_connection()
         user_collection = db_connection.user_collection  # Reemplaza "user_collection" con el nombre de tu colección
+        print("ok")
 
         user_document = user_collection.find_one({"user_name": user_name})
 
@@ -30,8 +31,9 @@ def search_user(user_name: str, db=True) -> Union[UserDB, User]:
         # Re-raise HTTPException to propagate the error with the correct status code
         raise
     except Exception as e:
+        print(e)
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Server error"
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Server error " + e
         )
 
 

@@ -4,12 +4,13 @@ from passlib.context import CryptContext
 from fastapi import APIRouter
 from pymongo import MongoClient
 from Models.User import User, UserCreate, UserDB, UserUpdate
+from config.database import Database
 
 api_router = APIRouter()
 
 # Configura tu conexión a MongoDB
-client = MongoClient("mongodb+srv://incedillo:U2vmSLzDmJNCT4aJ@cluster0.bm5ujfv.mongodb.net/?retryWrites=true&w=majority")
-db_connection = client.mydatabase  # Reemplaza "mydatabase" con el nombre de tu base de datos
+# client = MongoClient("mongodb+srv://incedillo:U2vmSLzDmJNCT4aJ@cluster0.bm5ujfv.mongodb.net/?retryWrites=true&w=majority")
+db_connection = Database.get_connection()  # Reemplaza "mydatabase" con el nombre de tu base de datos
 user_collection = db_connection.user_collection  # Reemplaza "user_collection" con el nombre de tu colección
 crypt = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
