@@ -5,6 +5,7 @@
 	import UploadImage from '../../components/UploadImage.svelte';
 	import Loader from '../../components/Loader.svelte';
 	import { API, getCookie, setCookie } from '../../Utils/function';
+	import DataInput from '../../components/DataInput.svelte';
 
 	// Definir el tipo para un evento
 	interface Event {
@@ -59,8 +60,9 @@
 </svelte:head>
 
 <div class="h-screen overflow-hidden">
-	<section class="mx-auto w-3/4 md:h-1/2 flex justify-center items-center">
+	<section class="mx-auto w-11/12 md:h-1/2 flex justify-center items-center flex-col md:flex-row gap-2">
 		<UploadImage />
+		<DataInput/>
 	</section>
 	<section class="w-11/12 mx-auto">
 		{#await load_histories()}

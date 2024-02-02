@@ -49,6 +49,7 @@
             <input
                 bind:value={value}
                 id={id}
+                min="0"
                 name="email"
                 type="number"
                 autocomplete={'user'}

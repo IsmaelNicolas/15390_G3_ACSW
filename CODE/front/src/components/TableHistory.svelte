@@ -39,13 +39,13 @@
 							{#if intensidad === 'severe'}
 								<span
 									class="bg-red-100 text-red-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300"
-									>{intensidad}</span
+									>Severo</span
 								>
 							{/if}
 							{#if intensidad === 'moderate'}
 								<span
 									class="bg-yellow-100 text-yellow-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300"
-									>{intensidad}</span
+									>Moderado</span
 								>
 							{/if}
 						</td>
