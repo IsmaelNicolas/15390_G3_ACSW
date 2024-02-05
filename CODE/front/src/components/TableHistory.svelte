@@ -6,10 +6,10 @@
 	let defaultModal = false;
 
 	export let events: HistoriaData[] = [];
-	let historia:HistoriaData = {fecha:'',blanco_biologico:'',id:'',intensidad:''}
+	let historia:HistoriaData = {fecha:'',blanco_biologico:'',id:'',intensidad:'',imageURL:''}
 
-	function setData(intensidad:string,blanco_biologico:string,id:string,fecha:string){
-		historia = {intensidad,blanco_biologico,fecha,id}
+	function setData(intensidad:string,blanco_biologico:string,id:string,fecha:string,imageURL:string){
+		historia = {intensidad,blanco_biologico,fecha,id,imageURL}
 		console.log(historia)
 		defaultModal = true
 	}
@@ -27,7 +27,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			{#each events as {id, fecha, intensidad, blanco_biologico }, index}
+			{#each events as {id, fecha, intensidad, blanco_biologico,imageURL }, index}
 				<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
 					<th
 						scope="row"
@@ -69,7 +69,7 @@
 					<td class="px-2 py-1">
 						<button
 							class="inline-flex items-center font-medium text-blue-600 dark:text-blue-500 hover:underline"
-							on:click={() => setData(intensidad, blanco_biologico, id, fecha)}
+							on:click={() => setData(intensidad, blanco_biologico, id, fecha,imageURL)}
 						>
 							<Eye clss="w-8 h-6" />
 							Ver
@@ -81,8 +81,10 @@
 	</table>
 </div>
 <Modal title="Evento {historia.fecha}" bind:open={defaultModal} autoclose>
-	<DataInput {historia}/>
-	<svelte:fragment slot="footer">
-		<Button color="alternative">Cerrar</Button>
-	</svelte:fragment>
+	<!-- svelte-ignore a11y-img-redundant-alt -->
+	<div class="flex gap-4">
+
+		<img class="w-1/2" src="{historia.imageURL}" alt="image description">/
+		<DataInput {historia}/>
+	</div>
 </Modal>

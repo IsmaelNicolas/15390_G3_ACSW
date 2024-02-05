@@ -2,20 +2,37 @@
 	import { onMount } from 'svelte';
 	import axios from 'axios';
 	import Loader from './Loader.svelte';
-	import { getCookie } from '../Utils/function';
+	import { API, getCookie } from '../Utils/function';
 	import { createEventDispatcher } from 'svelte';
 	import type { HistoriaData } from '../Models/HistoriaData';
 
 	let predicted_classes: string;
 	let promise: Promise<any>;
 
-	let historia:HistoriaData;
+	let historia: HistoriaData;
 
 	const dispatch = createEventDispatcher();
 
 	function enviarMensajeAlPadre() {
-		
 		dispatch('addHistory', historia);
+	}
+
+	function encontrarCategoriaMaxima(categorias:any) {
+		let maxConfidence = -1;
+		let categoriaMaxima = null;
+
+		for (const categoria in categorias) {
+			if (categorias.hasOwnProperty(categoria)) {
+				const confidence = categorias[categoria].confidence;
+
+				if (confidence > maxConfidence) {
+					maxConfidence = confidence;
+					categoriaMaxima = categoria;
+				}
+			}
+		}
+
+		return maxConfidence;
 	}
 
 	async function classifyImage(result: string) {
@@ -41,7 +58,8 @@
 
 			// Verificar si la respuesta es exitosa
 			predicted_classes = response.data;
-			return [predicted_classes];
+			const confidence = encontrarCategoriaMaxima(response.data.predictions);
+			return [predicted_classes,confidence];
 		} catch (error: any) {
 			// Manejar errores
 			console.error('Error en la llamada a la API:', error.message);
@@ -49,7 +67,7 @@
 		}
 	}
 
-	async function postHistoria(data: HistoriaData): Promise<void> {
+	async function postHistoria(data: HistoriaData, selectedFile: File): Promise<void> {
 		const url = 'http://localhost:8000/historias/';
 
 		// Obtener el token de acceso de la cookie
@@ -77,8 +95,24 @@
 			} else {
 				const data = await response.json();
 				historia = data;
-				console.log("Historia",historia)
-				enviarMensajeAlPadre()
+				// console.log('Historia', historia);
+				const formData = new FormData();
+				formData.append('file', selectedFile);
+
+				const resp = await fetch('http://localhost:8000/api/historia/image/' + historia.id, {
+					method: 'POST',
+					body: formData,
+					headers: {
+						Authorization: `Bearer ${access_token}` // Agregar el token al encabezado
+					}
+				});
+
+				if (!resp.ok) {
+					const errorText = await resp.text();
+					throw new Error(`Error en la solicitud: ${errorText}`);
+				}
+
+				enviarMensajeAlPadre();
 			}
 
 			// console.log('Solicitud exitosa');
@@ -112,13 +146,15 @@
 							({ blanco_biologico, intensidad } = clasificarResultados(data));
 						}
 
-						console.log(blanco_biologico, intensidad);
+						// console.log(blanco_biologico, intensidad);
 						const historiaData: HistoriaData = {
 							fecha: new Date().toISOString(),
 							intensidad: intensidad,
-							blanco_biologico: blanco_biologico
+							blanco_biologico: blanco_biologico,
+							id: ''
 						};
-						await postHistoria(historiaData);
+						
+						await postHistoria(historiaData, selectedFile);
 					});
 				}
 			};

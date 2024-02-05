@@ -4,6 +4,8 @@
 	import Logo from '$lib/images/new_logo.svg';
 	import {API,setCookie} from '../../Utils/function'
 	import { goto } from '$app/navigation';
+	import {notifications} from '../../Utils/notification'
+	import Toast from '../../components/Toast.svelte'
 
 	let username = '';
 	let password = '';
@@ -27,9 +29,11 @@
 				setCookie("access_token",access_token,7,'/');
 				goto('/home');
 			} else {
+				notifications.danger('Credenciales incorrectas', 500)
 				console.log('Error in response:', await response.text());
 			}
 		} catch (error) {
+			notifications.danger('STOP NOW!', 500)
 			console.error('Error durante fetch:', error);
 		}
 	}

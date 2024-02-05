@@ -10,7 +10,7 @@
 	
 	
 
-	let historia: HistoriaData = { fecha: '', intensidad: '', blanco_biologico: '' };
+	let historia: HistoriaData = { fecha: '', intensidad: '', blanco_biologico: '',id:'',imageURL:'' };
 
 	function manejarMensajeDelHijo(event: CustomEvent<HistoriaData>) {
 		historia = event.detail;

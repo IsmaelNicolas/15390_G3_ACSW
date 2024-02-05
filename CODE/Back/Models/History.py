@@ -17,6 +17,9 @@ class HistoriaUpdate(BaseModel):
     blanco_biologico: Optional[str]
 
 class Historia(HistoriaBase):
-    id:str
+    id: str
+    imageURL: Optional[str]  # Asegúrate de que imageURL sea opcional si algunos documentos no lo tienen
+
     class Config:
         orm_mode = True
+

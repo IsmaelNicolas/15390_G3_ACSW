@@ -3,4 +3,6 @@ export interface HistoriaData {
     fecha: string;
     intensidad: string;
     blanco_biologico: string;
+    imageURL:string;
+    // confidence:string;
 }

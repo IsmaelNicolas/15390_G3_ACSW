@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type { HistoriaData } from "../Models/HistoriaData";
 
-	
-	export let historia: HistoriaData = { fecha: '', intensidad: '', blanco_biologico: '' };
+	export let confidence = '';
+	export let historia: HistoriaData = { fecha: '', intensidad: '', blanco_biologico: '',id:'',imageURL:'' };
 	console.log(historia);
 </script>
 
@@ -36,6 +36,14 @@
 				<strong class="font-semibold text-gray-900 dark:text-white">Blanco biologico:</strong>
 				<p>{historia.blanco_biologico}</p>
 			</div>
+			{#if confidence !=='' }
+
+			<div>
+				<strong class="font-semibold text-gray-900 dark:text-white">Fiabilidad:</strong>
+				<p>confidence</p>
+			</div>
+				
+			{/if}
 		</div>
 	</section>
 {/if}

@@ -1,10 +1,16 @@
-from fastapi import (APIRouter, Depends, FastAPI, HTTPException, Response,
+import os
+from bson.objectid import ObjectId
+from fastapi import (APIRouter, Depends, FastAPI, File, HTTPException, Response, UploadFile,
                      status)
 from Utils.Crud import HistoriaCRUD
 from Models.History import Historia, HistoriaCreate, HistoriaUpdate
 from Models.User import User
 from Utils.Services import current_user
 from typing import List
+import cloudinary.uploader
+from pymongo.collection import Collection
+from config.database import Database
+
 
 router = APIRouter()
 
@@ -35,3 +41,35 @@ def delete_historia(historia_id: str,user: User = Depends(current_user)):
 def read_all_historias(user: User = Depends(current_user)):
     historias = HistoriaCRUD.get_all_historias(user_id=user.user_id)
     return historias
+
+@router.post("/api/historia/image/{historia_id}")
+async def set_image(historia_id: str, file: UploadFile = File(...), user: User = Depends(current_user)):
+    print(historia_id)
+    try:
+        # Asegurarse de que la historia exista
+        collection: Collection = Database.get_connection().historias
+        obj_id = ObjectId(historia_id)
+
+        historia = collection.find_one({"_id": obj_id})
+
+        if not historia:
+            raise HTTPException(status_code=404, detail="Historia no encontrada")
+            # raise HTTPException(status_code=HTTP_404_NOT_FOUND, detail="Historia no encontrada")
+        print(historia)
+        # Leer el contenido del archivo
+        file_content = await file.read()
+        # Subir el archivo a Cloudinary
+        upload_result = cloudinary.uploader.upload(file_content)
+
+        image_url = upload_result['secure_url']
+
+        # Actualizar la historia con la URL de la imagen
+        collection.update_one({"_id": obj_id}, {"$set": {"imageURL": image_url}})
+        
+        # Actualizar la respuesta con la historia actualizada
+        # historia["imageURL"] = image_url
+        # return historia
+        return image_url
+    except Exception as e:
+        print("Error",str(e))
+        raise HTTPException(status_code=500, detail=f"Error al subir la imagen a Cloudinary: {str(e)}")
