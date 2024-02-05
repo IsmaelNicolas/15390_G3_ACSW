@@ -1,5 +1,6 @@
-from typing import Optional
+from typing import Annotated, Optional
 from datetime import datetime
+from fastapi import File, UploadFile
 from pydantic import BaseModel
 
 class HistoriaBase(BaseModel):
@@ -16,6 +17,6 @@ class HistoriaUpdate(BaseModel):
     blanco_biologico: Optional[str]
 
 class Historia(HistoriaBase):
-
+    id:str
     class Config:
         orm_mode = True

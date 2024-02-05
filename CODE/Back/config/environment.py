@@ -27,3 +27,8 @@ Clave secreta utilizada para firmar el token JWT.
 Valor:
     str: Valor de la variable de entorno 'SECRET'.
 """
+
+CLOUDINARY_API_KEY = os.getenv('CLOUDINARY_API_KEY')
+CLOUDINARY_API_SECRET = os.getenv('CLOUDINARY_API_SECRET')
+CLOUDINARY_CLOUD_NAME = os.getenv('CLOUDINARY_CLOUD_NAME')
+MONGO_URL = os.getenv('MONGO_URL')

@@ -1,14 +1,22 @@
 <script lang="ts">
-	interface Event {
-		fecha: string;
-		intensidad: string;
-		blanco_biologico: string;
-	}
-	export let events: Event[] = [];
+	import { Button, Modal } from 'flowbite-svelte';
 	import Eye from '../components/Eye.svelte';
+	import type { HistoriaData } from '../Models/HistoriaData';
+	import DataInput from './DataInput.svelte';
+	let defaultModal = false;
+
+	export let events: HistoriaData[] = [];
+	let historia:HistoriaData = {fecha:'',blanco_biologico:'',id:'',intensidad:''}
+
+	function setData(intensidad:string,blanco_biologico:string,id:string,fecha:string){
+		historia = {intensidad,blanco_biologico,fecha,id}
+		console.log(historia)
+		defaultModal = true
+	}
+
 </script>
 
-<div class="relative overflow-x-auto">
+<div class="relative overflow-x-auto overflow-y-auto">
 	<table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
 		<thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
 			<tr>
@@ -19,7 +27,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			{#each events as { fecha, intensidad, blanco_biologico }, index}
+			{#each events as {id, fecha, intensidad, blanco_biologico }, index}
 				<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
 					<th
 						scope="row"
@@ -61,6 +69,7 @@
 					<td class="px-2 py-1">
 						<button
 							class="inline-flex items-center font-medium text-blue-600 dark:text-blue-500 hover:underline"
+							on:click={() => setData(intensidad, blanco_biologico, id, fecha)}
 						>
 							<Eye clss="w-8 h-6" />
 							Ver
@@ -71,3 +80,9 @@
 		</tbody>
 	</table>
 </div>
+<Modal title="Evento {historia.fecha}" bind:open={defaultModal} autoclose>
+	<DataInput {historia}/>
+	<svelte:fragment slot="footer">
+		<Button color="alternative">Cerrar</Button>
+	</svelte:fragment>
+</Modal>

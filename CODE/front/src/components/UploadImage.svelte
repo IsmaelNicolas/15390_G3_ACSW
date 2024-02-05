@@ -3,9 +3,20 @@
 	import axios from 'axios';
 	import Loader from './Loader.svelte';
 	import { getCookie } from '../Utils/function';
+	import { createEventDispatcher } from 'svelte';
+	import type { HistoriaData } from '../Models/HistoriaData';
 
 	let predicted_classes: string;
 	let promise: Promise<any>;
+
+	let historia:HistoriaData;
+
+	const dispatch = createEventDispatcher();
+
+	function enviarMensajeAlPadre() {
+		
+		dispatch('addHistory', historia);
+	}
 
 	async function classifyImage(result: string) {
 		const imageBase64 = result.split(',')[1];
@@ -38,12 +49,6 @@
 		}
 	}
 
-	interface HistoriaData {
-		fecha: string;
-		intensidad: string;
-		blanco_biologico: string;
-	}
-
 	async function postHistoria(data: HistoriaData): Promise<void> {
 		const url = 'http://localhost:8000/historias/';
 
@@ -69,12 +74,16 @@
 				// Si la respuesta no es exitosa, lanzar un error
 				const errorText = await response.text();
 				throw new Error(`Error en la solicitud: ${errorText}`);
+			} else {
+				const data = await response.json();
+				historia = data;
+				console.log("Historia",historia)
+				enviarMensajeAlPadre()
 			}
 
-			console.log('Solicitud exitosa');
-			location.reload();
-			// Puedes realizar acciones adicionales después de una solicitud exitosa
-		} catch (error:any) {
+			// console.log('Solicitud exitosa');
+			// location.reload();
+		} catch (error: any) {
 			console.error(error.message);
 			throw error; // Puedes manejar el error o relanzarlo según tus necesidades
 		}
@@ -130,7 +139,7 @@
 			oidio: 'oidio'
 			// Agregar más mapeos según sea necesario
 		};
-		console.log(resultados);
+		// console.log(resultados);
 		const intensidadMap: { [key: string]: 'slight' | 'moderate' | 'severe' } = {
 			slight: 'slight',
 			moderate: 'moderate',

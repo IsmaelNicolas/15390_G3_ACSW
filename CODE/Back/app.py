@@ -1,12 +1,13 @@
+from typing import Annotated
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, File
 from fastapi.middleware.cors import CORSMiddleware
 from router.login import api_router
 from router.user import api_router as user_router
 from router.history import router as history_router
 from Utils.Services import *
 
-app = FastAPI()
+app = FastAPI(encoding="utf-8")
 
 """
 Configuración del CORS
@@ -23,10 +24,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 app.include_router(api_router)
 app.include_router(user_router)
 app.include_router(history_router)
 
+@app.post("/files/")
+async def create_file(file: Annotated[bytes, File()]):
+    return {"file_size": len(file)}
 
 if __name__ == "__main__":
     """

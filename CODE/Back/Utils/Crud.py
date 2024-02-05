@@ -11,8 +11,8 @@ class HistoriaCRUD:
         historia_dict = historia_create.dict()
         historia_dict["user_id"] = user_id
         result = collection.insert_one(historia_dict)
-        historia_dict['_id'] = str(result.inserted_id)
-        print("201 history")
+        historia_dict['id'] = str(result.inserted_id)
+        print(historia_dict)
         return Historia(**historia_dict)
 
     @staticmethod
@@ -37,5 +37,5 @@ class HistoriaCRUD:
     def get_all_historias(user_id: str) -> List[Historia]:
         collection: Collection = Database.get_connection().historias
         filter_criteria = {"user_id": user_id}
-        historias_list = [Historia(**historia) for historia in collection.find(filter_criteria)]
+        historias_list = [Historia(id=str(historia['_id']), **historia) for historia in collection.find(filter_criteria)]
         return historias_list

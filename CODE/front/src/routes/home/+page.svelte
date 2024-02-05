@@ -6,6 +6,22 @@
 	import Loader from '../../components/Loader.svelte';
 	import { API, getCookie, setCookie } from '../../Utils/function';
 	import DataInput from '../../components/DataInput.svelte';
+	import type { HistoriaData } from '../../Models/HistoriaData';
+	
+	
+
+	let historia: HistoriaData = { fecha: '', intensidad: '', blanco_biologico: '' };
+
+	function manejarMensajeDelHijo(event: CustomEvent<HistoriaData>) {
+		historia = event.detail;
+		reloadHistories();
+	}
+
+	let reloadData = false;
+
+	function reloadHistories() {
+		reloadData = !reloadData; // Cambia la variable para indicar recarga de datos
+	}
 
 	// Definir el tipo para un evento
 	interface Event {
@@ -23,7 +39,7 @@
 				Authorization: `Bearer ${access_token}`
 			}
 		});
-		console.log(response)
+		console.log(response);
 		if (response.ok) {
 			const data = await response.json();
 			// console.log(data); // Verify that the data is logged correctly
@@ -52,6 +68,14 @@
 			goto('/login');
 		}
 	});
+
+	$: {
+		// Esta expresión observa cambios en reloadData y ejecuta la función load_histories()
+		if (reloadData) {
+			load_histories();
+			reloadHistories(); // Restablece la variable después de cargar los datos
+		}
+	}
 </script>
 
 <svelte:head>
@@ -60,9 +84,11 @@
 </svelte:head>
 
 <div class="h-screen overflow-hidden">
-	<section class="mx-auto w-11/12 md:h-1/2 flex justify-center items-center flex-col md:flex-row gap-2">
-		<UploadImage />
-		<DataInput/>
+	<section
+		class="mx-auto w-11/12 md:h-1/2 flex justify-center items-center flex-col md:flex-row gap-2"
+	>
+		<UploadImage on:addHistory={manejarMensajeDelHijo} />
+		<DataInput {historia} />
 	</section>
 	<section class="w-11/12 mx-auto">
 		{#await load_histories()}
