@@ -30,6 +30,7 @@
 				goto('/home');
 			} else {
 				notifications.danger('Credenciales incorrectas', 500)
+				alert("Credenciales incorrectas")
 				console.log('Error in response:', await response.text());
 			}
 		} catch (error) {

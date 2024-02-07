@@ -8,16 +8,17 @@
 
 	let predicted_classes: string;
 	let promise: Promise<any>;
-
+	let confidence: number;
 	let historia: HistoriaData;
 
 	const dispatch = createEventDispatcher();
 
 	function enviarMensajeAlPadre() {
 		dispatch('addHistory', historia);
+		dispatch('viewConfidence', confidence);
 	}
 
-	function encontrarCategoriaMaxima(categorias:any) {
+	function encontrarCategoriaMaxima(categorias: any) {
 		let maxConfidence = -1;
 		let categoriaMaxima = null;
 
@@ -58,8 +59,8 @@
 
 			// Verificar si la respuesta es exitosa
 			predicted_classes = response.data;
-			const confidence = encontrarCategoriaMaxima(response.data.predictions);
-			return [predicted_classes,confidence];
+			confidence = encontrarCategoriaMaxima(response.data.predictions);
+			return [predicted_classes, confidence];
 		} catch (error: any) {
 			// Manejar errores
 			console.error('Error en la llamada a la API:', error.message);
@@ -127,7 +128,12 @@
 		const input = event.target as HTMLInputElement;
 
 		if (input.files && input.files.length > 0) {
-			const selectedFile = input.files[0];
+			let selectedFile: File | null = input.files[0];
+			const allowedTypes = ['image/jpeg', 'image/jpg'];
+			if (!allowedTypes.includes(selectedFile.type)) {
+				alert('Por favor selecciona un archivo JPG o JPEG.');
+				selectedFile = null;
+			}
 
 			// Leer el contenido del archivo como base64
 			const reader = new FileReader();
@@ -153,7 +159,7 @@
 							blanco_biologico: blanco_biologico,
 							id: ''
 						};
-						
+
 						await postHistoria(historiaData, selectedFile);
 					});
 				}

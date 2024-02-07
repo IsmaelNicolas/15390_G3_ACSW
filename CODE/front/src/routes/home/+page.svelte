@@ -9,19 +9,19 @@
 	import type { HistoriaData } from '../../Models/HistoriaData';
 	
 	
-
+	let confidence:number
 	let historia: HistoriaData = { fecha: '', intensidad: '', blanco_biologico: '',id:'',imageURL:'' };
 
 	function manejarMensajeDelHijo(event: CustomEvent<HistoriaData>) {
 		historia = event.detail;
-		reloadHistories();
+		// reloadHistories();
+	}
+	function viewConfidence(event:CustomEvent<number>){
+		confidence = event.detail;
+
 	}
 
 	let reloadData = false;
-
-	function reloadHistories() {
-		reloadData = !reloadData; // Cambia la variable para indicar recarga de datos
-	}
 
 	// Definir el tipo para un evento
 	interface Event {
@@ -73,7 +73,7 @@
 		// Esta expresión observa cambios en reloadData y ejecuta la función load_histories()
 		if (reloadData) {
 			load_histories();
-			reloadHistories(); // Restablece la variable después de cargar los datos
+			// reloadHistories(); // Restablece la variable después de cargar los datos
 		}
 	}
 </script>
@@ -87,8 +87,8 @@
 	<section
 		class="mx-auto w-11/12 md:h-1/2 flex justify-center items-center flex-col md:flex-row gap-2"
 	>
-		<UploadImage on:addHistory={manejarMensajeDelHijo} />
-		<DataInput {historia} />
+		<UploadImage on:addHistory={manejarMensajeDelHijo} on:viewConfidence={viewConfidence} />
+		<DataInput {historia} {confidence}/>
 	</section>
 	<section class="w-11/12 mx-auto">
 		{#await load_histories()}

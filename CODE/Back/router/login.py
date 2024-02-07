@@ -49,13 +49,13 @@ async def login(response: Response, form: OAuth2PasswordRequestForm = Depends())
             status_code=status.HTTP_200_OK
         )
 
-        response.set_cookie(
-            key="access_token",
-            value=encoded_token,
-            expires=expire,
-            httponly=True,
-            samesite='lax',
-        )
+        # response.set_cookie(
+        #     key="access_token",
+        #     value=encoded_token,
+        #     expires=expire,
+        #     httponly=True,
+        #     samesite='lax',
+        # )
 
         return response
     except Exception as e:
